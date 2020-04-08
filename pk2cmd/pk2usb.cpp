@@ -56,7 +56,7 @@ const static int pickit_productID = 0x0033;	// PICkit 2 FLASH starter kit
 
 const static int pickit_endpoint_out = 1;		// endpoint 1 address for OUT
 const static int pickit_endpoint_in = 0x81;	// endpoint 0x81 address for IN
-const static int pickit_timeout = 10000;		// timeout in ms
+const static int pickit_timeout = 1000;		// timeout in ms
 
 // Code
 
