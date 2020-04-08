@@ -85,7 +85,7 @@ void Ccmd_app::PK2_CMD_Entry(int argc, _TCHAR* argv[])
 	}
 	else
 	{ // no -B, check PATH
-		_tsearchenv_s("PK2DeviceFile.dat", "PATH", tempString);
+		_tsearchenv_s("../share/pk2/PK2DeviceFile.dat", "PATH", tempString);
 		if (_tcslen(tempString) < 17)
 		{
 			_tcsncpy_s(tempString, "PK2DeviceFile.dat", 17);

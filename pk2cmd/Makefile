@@ -18,13 +18,25 @@ CC=g++
 # Uncomment this for debugging with gdb
 #DBG=-ggdb -O0
 # Uncomment this for no debugging (default)
-DBG=-O2
+DBG=-O3
 OPTS=-Wall -D_GNU_SOURCE $(DBG)
 OBJS=cmd_app.o DeviceData.o DeviceFile.o ImportExportHex.o PICkitFunctions.o PIC32PE.o Pk2BootLoader.o pk2cmd.o stdafx.o pk2usbcommon.o pk2usb.o P24F_PE.o dsP33_PE.o strnatcmp.o
 
-# Grab the version of libusb in /usr/local if possible:
-LIBUSB=/usr/local
-LDFLAGS=-L$(LIBUSB)/lib -lusb
+# Configure install dir
+INSTALL_PREFIX = $(HOME)/.local
+ifeq ($(wildcard $(INSTALL_PREFIX)/.),)
+INSTALL_PREFIX = /usr/local
+endif
+$(info installdir: $(INSTALL_PREFIX))
+
+# Grab the version of libusb in INSTALL_PREFIX if possible:
+LIBUSB=$(INSTALL_PREFIX)
+LIBUSB_LIB = $(LIBUSB)/lib64
+ifeq ($(wildcard $(LIBUSB_LIB)/.),)
+LIBUSB_LIB = $(LIBUSB)/lib
+endif
+
+LDFLAGS=-L$(LIBUSB_LIB) -lusb
 
 # CHOOSE A TARGET BEFORE COMPILING
 #
@@ -117,10 +129,10 @@ strnatcmp.o: strnatcmp.c strnatcmp.h stdafx.h
 	$(CC) $(CFLAGS) -x c -o $@  -c $<
 
 install: 
-	mkdir -p /usr/share/pk2
-	cp $(APP) /usr/local/bin
-	chmod u+s /usr/local/bin/$(APP)
-	cp PK2DeviceFile.dat /usr/share/pk2/PK2DeviceFile.dat
+	cp $(APP) $(INSTALL_PREFIX)/bin
+	chmod u+s $(INSTALL_PREFIX)/bin/$(APP)
+	mkdir -p $(INSTALL_PREFIX)/share/pk2
+	cp PK2DeviceFile.dat $(INSTALL_PREFIX)/share/pk2/PK2DeviceFile.dat
 
 clean:
 	rm -f *.o

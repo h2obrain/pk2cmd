@@ -34,12 +34,12 @@
 #include	"stdafx.h"
 #include	"pk2usb.h"
 
-#if HAVE_LIBUSB_INTERRUPT_MODE
-// latest libusb: interrupt mode, works with all kernels
-#  define PICKIT_USB(direction) usb_interrupt_##direction
-#else 
+#if HAVE_LIBUSB_OLD_BULK_MODE
 // older libusb: bulk mode, will only work with older kernels
 #  define PICKIT_USB(direction) usb_bulk_##direction
+#else 
+// latest libusb: interrupt mode, works with all kernels
+#  define PICKIT_USB(direction) usb_interrupt_##direction
 #endif
 
 // Prototypes

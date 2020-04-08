@@ -44,17 +44,20 @@ char *_tcsncpy_s(char *dst, const char *src, int len)
 
 	_tsearchenv_s("PK2DeviceFile.dat", "PATH", tempString);
 */
-
+//#include <cstdio>
 void _tsearchenv_s(const char *fname, const char *path, char *bfr)
 {
 	int	offset = 0;//, found = 0;
 	char	*env;
 	char	file[MAX_PATH];
 
+	*bfr = '\0';
+
 	env = getenv(path);
 
 	if (env)
 	{
+		//printf("searching ${'%s'} for '%s'\n", path, fname);
 		while (*env && (*env != ':'))
 		{
 			file[offset++] = *env++;
@@ -69,6 +72,7 @@ void _tsearchenv_s(const char *fname, const char *path, char *bfr)
 
 				strcat(file, "/");
 				strcat(file, fname);
+				//printf("- '%s'\n", file);
 
 				if (!access(file, 0))
 				{
