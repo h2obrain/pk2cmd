@@ -20,13 +20,13 @@
 // DISTRIBUTION OF THIS SOFTWARE OR ITS DERIVATIVES.
 //
 //---------------------------------------------------------------------------
-#ifndef	WIN32		// This module is not used by the Windows build
+#if !defined(WIN32) || defined(MINGW)		// This module is not used by the Windows build
 
 // Comment out the following line if you do not use usb hotplug
 #define	USB_HOTPLUG
 
 #include	<stdio.h>
-#include <usb.h>			// libusb header
+#include "usb.h"			// libusb header
 #include <unistd.h>		// for geteuid
 #include	<ctype.h>
 #include	<string.h>
@@ -208,7 +208,7 @@ pickit_dev *usbPickitOpen(int unitIndex, char *unitID)
 	char					unitIDSerial[64];
 	byte					retData[reqLen + 1];
 
-#ifdef LINUX
+#if defined(LINUX)|defined(MINGW)
 	int					retval;
 	char					dname[32] = {0};
 #ifndef USE_DETACH
@@ -221,7 +221,7 @@ pickit_dev *usbPickitOpen(int unitIndex, char *unitID)
 		return NULL;
 #endif
 
-#ifdef LINUX
+#if defined(LINUX)|defined(MINGW)
 	if (usbdebug & USB_DEBUG_DRIVER)
 		usb_set_debug(255);
 #endif
@@ -290,7 +290,7 @@ pickit_dev *usbPickitOpen(int unitIndex, char *unitID)
 
 					if (d)
 					{			// This is our device
-	#ifdef LINUX
+	#if defined(LINUX)|defined(MINGW)
 						{
 							retval = usb_get_driver_np(d, 0, dname, 31);
 	#ifndef USE_DETACH

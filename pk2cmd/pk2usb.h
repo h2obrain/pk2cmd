@@ -23,7 +23,7 @@
 //
 //-----------------------------------------------------------------------------
 //
-#ifndef	WIN32
+#if !defined(WIN32) || defined(MINGW)
 
 #ifndef _PK2USB_H
 #define _PK2USB_H
@@ -48,7 +48,7 @@
 #define VERBOSE
 
 #ifndef __APPLE__
-#include	<usb.h>	// Linux
+#include	"usb.h"	// Linux
 typedef struct usb_dev_handle pickit_dev;
 extern usb_dev_handle	*deviceHandle;
 #else		// Mac OSX
@@ -73,6 +73,9 @@ typedef struct hidreport *hidreport_t;
 
 extern pickit_dev	*deviceHandle;
 #endif  // Mac OSX
+
+#include <stdbool.h>
+#include <stdint.h>
 
 #define	byte		unsigned char
 #define	uint		unsigned int

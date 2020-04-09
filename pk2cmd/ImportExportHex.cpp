@@ -447,11 +447,11 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 					_stprintf_s(hexWord, 32, "%08X", picFuncs->DeviceBuffers->ProgramMemory[arrayIndex + i]);
 					for (int j = 0; j < bytesPerWord; j++)
 					{
-						_tcsncat_s(hexLine, &hexWord[6 - 2 * j], 2);
+						_tcsncat_s(hexLine,sizeof(hexLine), &hexWord[6 - 2 * j], 2);
 					}
 				}
 				_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-				_tcsncat_s(hexLine, hexWord, 3);
+				_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 				_fputts(hexLine, hexfile);
 	            
 				fileAddress += 16;
@@ -464,7 +464,7 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 					fileAddress &= 0xFFFF;
 					_stprintf_s(hexLine, 80, ":02000004%04X", fileSegment);
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile);                       
 				}
 	        
@@ -489,11 +489,11 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
                         _stprintf_s(hexWord, 32, "%08X", picFuncs->DeviceBuffers->ProgramMemory[arrayIndex + i]);
                         for (int j = 0; j < bytesPerWord; j++)
                         {
-                            _tcsncat_s(hexLine, &hexWord[6 - 2 * j], 2);
+                            _tcsncat_s(hexLine,sizeof(hexLine), &hexWord[6 - 2 * j], 2);
                         }
                     }
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile);
                     
                     fileAddress += 16;
@@ -506,7 +506,7 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
                         fileAddress &= 0xFFFF;
 					_stprintf_s(hexLine, 80, ":02000004%04X", fileSegment);
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile); 
                                           
                     }
@@ -526,7 +526,7 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 				{ // need a segment address
 					_stprintf_s(hexLine, 80, ":02000004%04X", (eeAddr >> 16));
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile); 
 				}
 	            
@@ -542,11 +542,11 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 						_stprintf_s(hexWord, 32, "%08X", picFuncs->DeviceBuffers->EEPromMemory[arrayIndex + i]);
 						for (int j = 0; j < eeBytesPerWord; j++)
 						{
-							_tcsncat_s(hexLine, &hexWord[6 - 2 * j], 2);
+							_tcsncat_s(hexLine,sizeof(hexLine), &hexWord[6 - 2 * j], 2);
 						}
 					}
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile);
 
 					fileAddress += 16;
@@ -572,7 +572,7 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 				{ // need a segment address
 					_stprintf_s(hexLine, 80, ":02000004%04X", (configAddr >> 16));
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile); 
 				}
 
@@ -600,11 +600,11 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 						_stprintf_s(hexWord, 32, "%08X", picFuncs->DeviceBuffers->ConfigWords[cfgsWritten + i]);
 						for (int j = 0; j < cfgBytesPerWord; j++)
 						{
-							_tcsncat_s(hexLine, &hexWord[8 - ((j+1)*2)], 2);
+							_tcsncat_s(hexLine,sizeof(hexLine), &hexWord[8 - ((j+1)*2)], 2);
 						}
 					}
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile);
 					cfgsWritten += cfgsLeft;
 			   }               
@@ -623,7 +623,7 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 				{ // need a segment address
 					_stprintf_s(hexLine, 80, ":02000004%04X", (uIDAddr >> 16));
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile); 
 				}
 
@@ -648,11 +648,11 @@ bool CImportExportHex::ExportHexFile(_TCHAR* filePath, CPICkitFunctions* picFunc
 						_stprintf_s(hexWord, 32, "%08X", picFuncs->DeviceBuffers->UserIDs[arrayIndex + i]);
 						for (int j = 0; j < idBytesPerWord; j++)
 						{
-							_tcsncat_s(hexLine, &hexWord[6 - 2 * j], 2);
+							_tcsncat_s(hexLine,sizeof(hexLine), &hexWord[6 - 2 * j], 2);
 						}
 					}
 					_stprintf_s(hexWord, 32, "%02X\n", computeChecksum(hexLine));
-					_tcsncat_s(hexLine, hexWord, 3);
+					_tcsncat_s(hexLine,sizeof(hexLine), hexWord, 3);
 					_fputts(hexLine, hexfile);
 
 					fileAddress += 16;

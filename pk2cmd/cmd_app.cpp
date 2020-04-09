@@ -67,7 +67,7 @@ void Ccmd_app::PK2_CMD_Entry(int argc, _TCHAR* argv[])
 	bool loadDeviceFileFailed = false;
 	if (checkDevFilePathOptionB(argc, argv, tempString))
 	{ // check for explicit path with -B
-#ifdef WIN32
+#if defined(WIN32) // && !defined(MINGW)
 		if (tempString[_tcslen(tempString)-1] != '\\')
 			_tcscat_s(tempString, "\\PK2DeviceFile.dat");
 		else
@@ -85,7 +85,7 @@ void Ccmd_app::PK2_CMD_Entry(int argc, _TCHAR* argv[])
 	}
 	else
 	{ // no -B, check PATH
-		_tsearchenv_s("../share/pk2/PK2DeviceFile.dat", "PATH", tempString);
+		_tsearchenv_s("../share/pk2/PK2DeviceFile.dat", "PATH", tempString, MAX_PATH);
 		if (_tcslen(tempString) < 17)
 		{
 			_tcsncpy_s(tempString, "PK2DeviceFile.dat", 17);

@@ -34,7 +34,7 @@
 #define	_totupper	 toupper
 //#define	_tcsncpy_s	strncpy
 #define	_tcscat_s	strcat
-#define	_tcsncat_s	strncat
+#define	_tcsncat_s(DST,DSTSIZ,SRC,SRCSIZ)	strncat(DST,SRC,DSTSIZ<SRCSIZ ? DSTSIZ : SRCSIZ)
 #define	_tcschr		strchr
 #define	_tstof		atof
 #define	_tzset		tzset
@@ -46,7 +46,7 @@
 #define	_tfopen_s	fopen_s
 
 extern char * _tcsncpy_s(char *dst, const char *src, int len);
-extern void _tsearchenv_s(const char *fname, const char *path, char *bfr);
+extern void _tsearchenv_s(const char *fname, const char *path, char *bfr, size_t size);
 extern void	_localtime64_s(struct tm *x, time_t *y);
 extern void	_tcsftime(char *bfr, int len, const char *fmt, struct tm *time);
 extern void	_stprintf_s(char *bfr, int size, const char *fmt, ...);
@@ -54,10 +54,12 @@ extern int	fopen_s(FILE **fp, char *path, const char *spec);
 
 #endif
 
+/*
 // Not all compilers define 'bool' to have the same size, so we force it here.
 #ifdef bool
 #undef bool
 #endif
 #define	bool	unsigned char
+*/
 
 // TODO: reference additional headers your program requires here

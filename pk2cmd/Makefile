@@ -51,6 +51,7 @@ LDFLAGS=-L$(LIBUSB_LIB) -lusb
 #TARGET=freebsd
 #TARGET=mac104
 #TARGET=mac105
+#TARGET=mingw
 
 # ----- This may be necessary for OSX fink
 #LIBUSB=/sw
@@ -73,6 +74,9 @@ ifeq ($(TARGET),mac105)
 CFLAGS=$(OPTS) -I$(LIBUSB)/include -DDARWIN -DMACOSX_HID -DMACOSX105
 OBJS=cmd_app.o DeviceData.o DeviceFile.o ImportExportHex.o PICkitFunctions.o PIC32PE.o Pk2BootLoader.o pk2cmd.o stdafx.o pk2usbcommon.o pk2usbmacosx.o P24F_PE.o dsP33_PE.o strnatcmp.o
 LDFLAGS=-framework IOKit -framework CoreFoundation
+endif
+ifeq ($(TARGET),mingw)
+CFLAGS=$(OPTS) -I$(LIBUSB)/include -DMINGW -DUSE_DETACH -DCLAIM_USB
 endif
 
 .PHONY: target
@@ -129,9 +133,10 @@ strnatcmp.o: strnatcmp.c strnatcmp.h stdafx.h
 	$(CC) $(CFLAGS) -x c -o $@  -c $<
 
 install: 
-	cp $(APP) $(INSTALL_PREFIX)/bin
-	chmod u+s $(INSTALL_PREFIX)/bin/$(APP)
-	mkdir -p $(INSTALL_PREFIX)/share/pk2
+	mkdir -p $(INSTALL_PREFIX)/bin && \
+	cp $(APP) $(INSTALL_PREFIX)/bin/ && \
+	chmod u+s $(INSTALL_PREFIX)/bin/$(APP) && \
+	mkdir -p $(INSTALL_PREFIX)/share/pk2 && \
 	cp PK2DeviceFile.dat $(INSTALL_PREFIX)/share/pk2/PK2DeviceFile.dat
 
 clean:
@@ -155,9 +160,12 @@ mac104:		# build for Mac OSX 10.4
 mac105:		# build for Mac OSX 10.5
 	$(MAKE) TARGET=mac105
 
+mingw:
+	$(MAKE) TARGET=mingw
+
 # This must be last in the Makefile, or ugly things might happen
 target:
 ifeq ($(TARGET),)
-	$(error You must select a TARGET in Makefile or specify the target on the command line, for example: make linux)
+	$(error You must select a TARGET in Makefile or specify the target (linux, linux-old, freebsd, mac104, mac105 or mingw) on the command line, for example: make linux)
 endif
 

@@ -21,7 +21,7 @@
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
-#include	<stdarg.h>
+#include <stdarg.h>
 
 // TODO: reference any additional headers you need in STDAFX.H
 // and not in this file
@@ -42,14 +42,15 @@ char *_tcsncpy_s(char *dst, const char *src, int len)
 
 /* Called from cmd_app.cpp
 
-	_tsearchenv_s("PK2DeviceFile.dat", "PATH", tempString);
+	_tsearchenv_s("PK2DeviceFile.dat", "PATH", tempString, MAX_PATH);
 */
 //#include <cstdio>
-void _tsearchenv_s(const char *fname, const char *path, char *bfr)
+void _tsearchenv_s(const char *fname, const char *path, char *bfr, size_t size)
 {
 	int	offset = 0;//, found = 0;
 	char	*env;
-	char	file[MAX_PATH];
+	char	file[size > MAX_PATH ? size : MAX_PATH];
+	size--;
 
 	*bfr = '\0';
 
@@ -70,19 +71,20 @@ void _tsearchenv_s(const char *fname, const char *path, char *bfr)
 				if (*env)
 					env++;
 
-				strcat(file, "/");
-				strcat(file, fname);
+				strncat(file, "/", size);
+				strncat(file, fname, size);
 				//printf("- '%s'\n", file);
 
 				if (!access(file, 0))
 				{
-					strcpy(bfr, file);
+					strncpy(bfr, file, size);
 					break;
 				}
 
 			}
 		}
 	}
+	bfr[size] = '\0';
 }
 
 void _localtime64_s(struct tm *x, time_t *y)

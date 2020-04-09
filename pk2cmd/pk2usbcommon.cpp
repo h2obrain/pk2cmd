@@ -21,15 +21,15 @@
 //
 //---------------------------------------------------------------------------
 //
-#ifndef	WIN32
+#if !defined(WIN32) || defined(MINGW)
 
 #include	<stdio.h>
 #include <unistd.h>
 #include	<ctype.h>
 #include	<string.h>
 
-#include	"stdafx.h"
 #include	"pk2usb.h"
+#include	"stdafx.h"
 
 // Prototypes
 //   none
@@ -37,9 +37,9 @@
 // Data
 
 #ifdef VERBOSE
-bool	verbose = 1;		// generate user messages
+bool	verbose = true;		// generate user messages
 #else
-bool	verbose = 0;		// don't generate user messages
+bool	verbose = false;		// don't generate user messages
 #endif
 
 int	pickit2mode = 0;
